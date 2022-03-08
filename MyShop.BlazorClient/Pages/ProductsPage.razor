@@ -1,0 +1,30 @@
+﻿@page "/product"
+@using MyShop.HttpApiClient
+@using MyShop.Models
+@using MyShop.BlazorClient.Components
+
+<h3>Products</h3>
+
+@inject IHttpApiClient _apiClient
+
+@if (_products is null)
+{
+    <div>Loading</div>
+}
+else
+{
+    <ProductList Products="_products" />
+}
+
+@code {
+    private IReadOnlyList<Product>? _products; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        _products = await _apiClient.GetAll();
+        
+         StateHasChanged();
+    }
+}

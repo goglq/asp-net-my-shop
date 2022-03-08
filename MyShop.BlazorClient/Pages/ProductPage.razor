@@ -1,0 +1,38 @@
+﻿@page "/product/{ProductId:guid}"
+@using MyShop.Models
+@using MyShop.HttpApiClient
+
+@inject IHttpApiClient _httpApiClient
+
+@if (Product is not null)
+{
+    <div class="mb-5 d-flex justify-content-between">
+        <h1>@Product.Name</h1>
+        <h2>$@decimal.Round(Product.Price)</h2>
+    </div>
+    <img src=@Product.ImageUrl alt=@Product.Id class="mb-5"/>
+    <div>
+        <h3>Описание</h3>
+        <p>@Product.Description</p>
+    </div>
+}
+else
+{
+    <div>Loading</div>
+}
+
+@code {
+
+    [Parameter]
+    public Guid ProductId { get; set; }
+
+    private Product? Product { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Product = await _httpApiClient.Get(ProductId);
+    }
+
+}

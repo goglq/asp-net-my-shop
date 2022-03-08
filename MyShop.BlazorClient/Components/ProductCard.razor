@@ -1,0 +1,26 @@
+﻿@using MyShop.Models
+
+
+@if (Product is not null)
+{
+    <div class="card mb-5 me-4" style="width: 200px">
+        <NavLink href=@{$"product/{Product.Id}"} class="text-decoration-none text-black">
+            <img src=@Product.ImageUrl class="card-img-top" alt=@Product.Id/>
+            <div class="card-body">
+                <h5 class="card-title">@Product.Name</h5>
+                <h6 class="card-subtitle">$@decimal.Round(Product.Price)</h6>
+            </div>
+        </NavLink>
+    </div>
+}
+else
+{
+    <div>Loading</div>
+}
+
+@code {
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+}

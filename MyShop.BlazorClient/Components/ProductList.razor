@@ -1,0 +1,25 @@
+﻿@using MyShop.Models
+@using MyShop.HttpApiClient
+
+@inject IHttpApiClient _apiClient
+
+@if (Products is not null)
+{
+    <div class="d-flex flex-wrap">
+        @foreach (var product in Products)
+        {
+            <ProductCard Product=@product/>
+        }
+    </div>
+}
+else
+{
+    <div>Loading</div>
+}
+
+@code {
+
+    [Parameter]
+    public IReadOnlyList<Product>? Products { get; set; }
+
+}

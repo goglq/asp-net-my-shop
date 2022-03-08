@@ -1,0 +1,53 @@
+﻿@page "/product/create"
+@using MyShop.SharedProject.DTOs
+@using MyShop.HttpApiClient
+
+@inject IHttpApiClient _httpApiClient
+
+<h3>Создание Товара</h3>
+
+<div class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <EditForm Model="_productDto" OnValidSubmit="ProcessValidForm" class="w-25 d-flex flex-column">
+        <DataAnnotationsValidator/>
+
+        <div class="mb-4">
+            <div class="w-100 d-flex flex-column mb-3">
+                <label>Название</label>
+                <InputText @bind-Value="_productDto.Name"/>
+            </div>
+
+            <div class="w-100 d-flex flex-column mb-3">
+                <label>Описание</label>
+                <InputTextArea @bind-Value="_productDto.Description"/>
+            </div>
+
+            <div class="w-100 d-flex flex-column mb-3">
+                <label>Цена</label>
+                <InputNumber @bind-Value="_productDto.Price"/>
+            </div>
+
+            <div class="w-100 d-flex flex-column mb-3">
+                <label>URL Картинки</label>
+                <InputText @bind-Value="_productDto.ImageUrl"/>
+            </div>
+
+            <div class="w-100 d-flex flex-column mb-3">
+                <label>Id Катагории</label>
+                <InputText @bind-Value="_productDto.CategoryId"/>
+            </div>
+        </div>
+
+        <input class="align-self-end" type="submit" value="Создать"/>
+        <ValidationSummary/>
+    </EditForm>
+</div>
+
+@code {
+    private readonly ProductDto _productDto = new();
+
+    private async Task ProcessValidForm()
+    {
+        await _httpApiClient.Create(_productDto);
+    }
+
+}
