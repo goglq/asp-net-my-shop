@@ -2,10 +2,10 @@
 
 namespace MyShop.Models;
 
-public class Product
+public class Product : IEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     
     [Required]
     public string Name { get; set; }
@@ -20,5 +20,5 @@ public class Product
     [Required]
     public Guid CategoryId { get; set; }
     
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 }

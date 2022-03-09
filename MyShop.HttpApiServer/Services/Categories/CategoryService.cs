@@ -1,4 +1,5 @@
-﻿using MyShop.HttpApiServer.Infrastructure.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using MyShop.HttpApiServer.Infrastructure.Repositories;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
 
@@ -12,7 +13,11 @@ public class CategoryService : ICategoryService
     {
         _categoryRepository = categoryRepository;
     }
-    
+
+    public async Task<IEnumerable<Category>> GetAll() => await _categoryRepository.GetAll().ToListAsync();
+
+    public Task<Category> Get(Guid id) => _categoryRepository.GetById(id);
+
     public async Task Create(CategoryDTO categoryDto)
     {
         var newCategory = new Category()

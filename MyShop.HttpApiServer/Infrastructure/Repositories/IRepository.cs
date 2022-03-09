@@ -1,6 +1,8 @@
-﻿namespace MyShop.HttpApiServer.Infrastructure.Repositories;
+﻿using MyShop.Models;
 
-public interface IRepository<T> where T : class
+namespace MyShop.HttpApiServer.Infrastructure.Repositories;
+
+public interface IRepository<T> where T : class, IEntity
 {
     IQueryable<T> GetAll();
 

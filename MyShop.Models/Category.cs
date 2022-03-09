@@ -2,10 +2,10 @@
 
 namespace MyShop.Models;
 
-public class Category
+public class Category : IEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     
     [Required]
     public string Name { get; set; }

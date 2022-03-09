@@ -7,30 +7,23 @@ using MyShop.SharedProject.DTOs;
 
 namespace MyShop.HttpApiServer.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductController : Controller
+[Route("[controller]")]
+public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
-    private readonly IProductRepository _productRepository;
 
-    public ProductController(IProductService productService, IProductRepository productRepository)
+    public ProductController(IProductService productService)
     {
         _productService = productService;
-        _productRepository = productRepository;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Product>> Get([FromQuery] int skip = 0, [FromQuery] int take = 10) => 
-        await _productRepository
-            .GetAll()
-            .Skip(skip)
-            .Take(take)
-            .ToListAsync();
+    public Task<IEnumerable<Product>> Get([FromQuery] int skip = 0, [FromQuery] int take = 10) =>
+        _productService.GetAll(skip, take);
 
     [HttpGet("{id:guid}")]
     public Task<Product> Get(Guid id) =>
-        _productRepository.GetById(id);
+        _productService.Get(id);
     
     [HttpPost]
     public Task Create([FromBody] ProductDto productDto) => 
