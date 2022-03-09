@@ -8,6 +8,7 @@ using MyShop.SharedProject.DTOs;
 namespace MyShop.HttpApiServer.Controllers;
 
 [Route("[controller]")]
+[ApiController]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
@@ -18,14 +19,25 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    public Task<IEnumerable<Category>> GetAll() =>
-        _categoryService.GetAll();
+    public async Task<ActionResult<IEnumerable<Category>>> GetAll()
+    {
+        var categories = await _categoryService.GetAll();
+
+        return Ok(categories);
+    }
 
     [HttpGet("{id:guid}")]
-    public Task<Category> Get(Guid id) =>
-        _categoryService.Get(id);
-    
+    public async Task<ActionResult<Category>> Get(Guid id)
+    {
+        var category = await _categoryService.Get(id);
+        return Ok(category);
+    }
+
     [HttpPost]
-    public Task Create([FromBody] CategoryDTO categoryDto) => 
-        _categoryService.Create(categoryDto);
+    public async Task<IActionResult> Create(CategoryDTO categoryDto)
+    {
+        await _categoryService.Create(categoryDto);
+
+        return Ok();
+    }
 }
