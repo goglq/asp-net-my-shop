@@ -4,7 +4,7 @@ namespace MyShop.HttpApiServer.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class AccountController : ControllerBase
+public class CartController : ControllerBase
 {
     
 }

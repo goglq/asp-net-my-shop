@@ -38,6 +38,6 @@ public class CategoryController : ControllerBase
     {
         await _categoryService.Create(categoryDto);
 
-        return Ok();
+        return Created(Uri.UriSchemeHttp, null);
     }
 }

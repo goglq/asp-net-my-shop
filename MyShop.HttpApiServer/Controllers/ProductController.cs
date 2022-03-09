@@ -21,14 +21,14 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> Get([FromQuery] int skip = 0, [FromQuery] int take = 10)
     {
-        var products = await _productService.GetAll(skip, take);
+        var products = await _productService.GetAll(skip, take, DateTime.Now.DayOfWeek, HttpContext.Request.Headers.UserAgent);
         return Ok(products);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Product>> Get(Guid id)
     {
-        var product = await _productService.Get(id);
+        var product = await _productService.Get(id, DateTime.Now.DayOfWeek, HttpContext.Request.Headers.UserAgent);
         return Ok(product);
     }
 
@@ -36,6 +36,6 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Create(ProductDto productDto)
     {
         await _productService.Create(productDto);
-        return Ok();
+        return Created(Uri.UriSchemeHttp, null);
     }
 }
