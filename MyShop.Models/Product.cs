@@ -20,5 +20,5 @@ public class Product : IEntity
     [Required]
     public Guid CategoryId { get; set; }
     
-    public Category? Category { get; set; }
+    public Category Category { get; set; }
 }

@@ -41,6 +41,9 @@ namespace MyShop.HttpApiServer.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
