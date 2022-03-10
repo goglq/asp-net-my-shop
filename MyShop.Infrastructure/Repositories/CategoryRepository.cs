@@ -1,6 +1,7 @@
-﻿using MyShop.Models;
+﻿using MyShop.HttpApiServer.Infrastructure;
+using MyShop.Models;
 
-namespace MyShop.HttpApiServer.Infrastructure.Repositories;
+namespace MyShop.Infrastructure.Repositories;
 
 public class CategoryRepository : EfRepository<Category>, ICategoryRepository
 {

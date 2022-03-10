@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.HttpApiClient", "MyS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.SharedProject", "MyShop.SharedProject\MyShop.SharedProject.csproj", "{AC50854E-7B2A-4270-A2F0-375F8267D9B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.Infrastructure", "MyShop.Infrastructure\MyShop.Infrastructure.csproj", "{6AD0F413-D8A1-4BF1-A117-559399C2748D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{AC50854E-7B2A-4270-A2F0-375F8267D9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC50854E-7B2A-4270-A2F0-375F8267D9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC50854E-7B2A-4270-A2F0-375F8267D9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD0F413-D8A1-4BF1-A117-559399C2748D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD0F413-D8A1-4BF1-A117-559399C2748D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD0F413-D8A1-4BF1-A117-559399C2748D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD0F413-D8A1-4BF1-A117-559399C2748D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

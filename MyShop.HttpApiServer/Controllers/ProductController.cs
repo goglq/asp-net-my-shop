@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyShop.HttpApiServer.Infrastructure.Repositories;
 using MyShop.HttpApiServer.Services.Products;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;

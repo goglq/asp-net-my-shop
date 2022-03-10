@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using MyShop.HttpApiServer.Infrastructure;
-using MyShop.HttpApiServer.Infrastructure.Repositories;
 using MyShop.HttpApiServer.Options;
 using MyShop.HttpApiServer.Services.Categories;
 using MyShop.HttpApiServer.Services.Products;
+using MyShop.Infrastructure.Repositories;
 using Serilog;
 
 
@@ -50,9 +50,9 @@ try
     Log.Information("Server is running!");
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex.GetType().Name != "StopTheHostException")
 {
-    Log.Fatal(ex, "Unhandled Exception");
+    Log.Fatal(ex, @"Unhandled Exception {ExceptionType}", ex.GetType().Name);
 }
 finally
 {

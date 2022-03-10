@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyShop.HttpApiServer.Infrastructure.Repositories;
 using MyShop.HttpApiServer.Options;
+using MyShop.Infrastructure.Repositories;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
 

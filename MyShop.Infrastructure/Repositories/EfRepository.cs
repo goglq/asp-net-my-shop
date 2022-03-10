@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyShop.HttpApiServer.Infrastructure;
 using MyShop.Models;
 
-namespace MyShop.HttpApiServer.Infrastructure.Repositories;
+namespace MyShop.Infrastructure.Repositories;
 
 public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {

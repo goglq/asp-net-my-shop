@@ -12,6 +12,8 @@ public class Product : IEntity
     
     public string Description { get; set; }
     
+    public int Count { get; set; }
+    
     public string ImageUrl { get; set; }
     
     [Required]

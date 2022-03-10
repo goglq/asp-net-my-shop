@@ -1,6 +1,6 @@
 ﻿using MyShop.Models;
 
-namespace MyShop.HttpApiServer.Infrastructure.Repositories;
+namespace MyShop.Infrastructure.Repositories;
 
 public interface IProductRepository : IRepository<Product>
 {
