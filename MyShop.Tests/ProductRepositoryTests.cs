@@ -47,37 +47,50 @@ public class ProductRepositoryTests
     [Fact]
     public async Task AddProduct_Single()
     {
+        //Arrange
         var repository = new ProductRepository(_context);
-
+        
+        //Act
         await repository.Add(_products[0]);
         await repository.Save();
 
+        //Assert
         Assert.Single(_context.Products);
     }
 
     [Fact]
-    public async Task GetAllProducts_NotEmpty_EqualCount()
+    public async Task GetAllProducts_NotEmpty_EqualCount_Contains()
     {
+        //Arrange
         var repository = new ProductRepository(_context);
         _context.Products.AddRange(_products);
         await _context.SaveChangesAsync();
 
-        var products = repository.GetAll();
+        //Act
+        var products = repository.GetAll().ToList();
+        
+        //Assert
         Assert.NotEmpty(products);
-        Assert.Equal(_products.Count, products.Count());
+        Assert.Equal(_products.Count, products.Count);
+        foreach(var product in _products)
+        {
+            Assert.Contains(product, products);
+        } 
     }
 
     [Fact]
     public async Task GetProductById_NotNull()
     {
+        //Arrange
         var repository = new ProductRepository(_context);
         var product = _products[0];
-
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
 
+        //Act
         var productFromRepository = repository.GetById(product.Id);
         
+        //Assert
         Assert.NotNull(productFromRepository);
     }
 }

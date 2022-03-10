@@ -3,7 +3,7 @@ using MyShop.Infrastructure.Repositories;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
 
-namespace MyShop.HttpApiServer.Services.Categories;
+namespace MyShop.Infrastructure.Services.Categories;
 
 public class CategoryService : ICategoryService
 {

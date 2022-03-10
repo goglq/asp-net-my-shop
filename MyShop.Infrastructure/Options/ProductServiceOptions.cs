@@ -1,4 +1,4 @@
-﻿namespace MyShop.HttpApiServer.Options;
+﻿namespace MyShop.Infrastructure.Options;
 
 public class ProductServiceOptions
 {

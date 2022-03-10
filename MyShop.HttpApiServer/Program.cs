@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using MyShop.HttpApiServer.Infrastructure;
-using MyShop.HttpApiServer.Options;
-using MyShop.HttpApiServer.Services.Categories;
-using MyShop.HttpApiServer.Services.Products;
+using MyShop.Infrastructure.Options;
 using MyShop.Infrastructure.Repositories;
+using MyShop.Infrastructure.Services.Categories;
+using MyShop.Infrastructure.Services.Products;
 using Serilog;
 
 

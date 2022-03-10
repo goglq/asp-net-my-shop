@@ -34,26 +34,30 @@ public class CategoryRepositoryTests
     [Fact]
     public async Task AddCategory_Single_Success()
     {
+        //Arrange
         var repository = new CategoryRepository(_context);
-
+        
+        //Act
         await repository.Add(_categories[0]);
         await repository.Save();
-
+        
+        //Assert
         Assert.Single(_context.Categories);
     }
 
     [Fact]
     public async Task GetCategory_NotNull_Success()
     {
+        //Arrange
         var repository = new CategoryRepository(_context);
-
         var category = _categories[0];
-        
         await repository.Add(category);
         await repository.Save();
 
+        //Act
         var categoryFromRepository = repository.GetById(category.Id);
 
+        //Assert
         Assert.NotNull(categoryFromRepository);
     }
 }

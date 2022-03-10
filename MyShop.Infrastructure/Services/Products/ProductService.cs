@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyShop.HttpApiServer.Options;
+using MyShop.Infrastructure.Options;
 using MyShop.Infrastructure.Repositories;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
 
-namespace MyShop.HttpApiServer.Services.Products;
+namespace MyShop.Infrastructure.Services.Products;
 
 public class ProductService: IProductService
 {
