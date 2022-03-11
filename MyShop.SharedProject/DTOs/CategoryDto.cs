@@ -1,6 +1,9 @@
-﻿namespace MyShop.SharedProject.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class CategoryDTO
+namespace MyShop.SharedProject.DTOs;
+
+public class CategoryDto
 {
-    public string Name { get; set; }
+    [Required]
+    public string? Name { get; set; }
 }

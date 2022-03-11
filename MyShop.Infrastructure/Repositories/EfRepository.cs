@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyShop.HttpApiServer.Infrastructure;
 using MyShop.Models;
 
 namespace MyShop.Infrastructure.Repositories;
@@ -13,7 +12,7 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
         _dbContext = dbContext;
     }
 
-    private DbSet<TEntity> Entities => _dbContext.Set<TEntity>();
+    protected DbSet<TEntity> Entities => _dbContext.Set<TEntity>();
 
     public IQueryable<TEntity> GetAll() => Entities;
 

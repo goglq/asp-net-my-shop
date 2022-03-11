@@ -18,7 +18,7 @@ public class CategoryService : ICategoryService
 
     public Task<Category> Get(Guid id) => _categoryRepository.GetById(id);
 
-    public async Task Create(CategoryDTO categoryDto)
+    public async Task Create(CategoryDto categoryDto)
     {
         var newCategory = new Category()
         {

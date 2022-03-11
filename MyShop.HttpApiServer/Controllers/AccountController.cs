@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyShop.SharedProject.DTOs;
 
 namespace MyShop.HttpApiServer.Controllers;
 
@@ -6,5 +7,9 @@ namespace MyShop.HttpApiServer.Controllers;
 [ApiController]
 public class AccountController : ControllerBase
 {
-    
+    [HttpPost("registration")]
+    public async Task<IActionResult> Registration(AccountDto accountDto)
+    {
+        return Ok();
+    }
 }

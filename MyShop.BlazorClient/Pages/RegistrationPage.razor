@@ -1,0 +1,38 @@
+﻿@page "/registration"
+@using MyShop.SharedProject.DTOs
+@using System.ComponentModel.DataAnnotations
+
+<h3>Registration</h3>
+
+<EditForm Model="_model" OnValidSubmit="ProcessValidSubmit">
+    <DataAnnotationsValidator />
+    <div>
+        <label>Имя</label>
+        <InputText @bind-Value="_model.Name"/>
+    </div>
+    <div>
+        <label>Email</label>
+        <InputText @bind-Value="_model.Email"/>
+    </div>
+    <div>
+        <label>Password</label>
+        <InputText type="password" @bind-Value="_model.Password"/>
+    </div>
+    <div>
+        <label>Repeat Password</label>
+        <InputText type="password" @bind-Value="_model.RepeatPassword"/>
+    </div>
+    
+    <input type="submit" value="Sign up"/>
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    private readonly AccountDto _model = new();
+
+    private void ProcessValidSubmit()
+    {
+        throw new NotImplementedException();
+    }
+
+}

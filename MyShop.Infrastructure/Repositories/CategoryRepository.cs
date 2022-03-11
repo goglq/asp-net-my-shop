@@ -1,5 +1,4 @@
-﻿using MyShop.HttpApiServer.Infrastructure;
-using MyShop.Models;
+﻿using MyShop.Models;
 
 namespace MyShop.Infrastructure.Repositories;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MyShop.HttpApiServer.Infrastructure;
+using MyShop.Infrastructure;
 using MyShop.Infrastructure.Repositories;
 using MyShop.Models;
 using Xunit;

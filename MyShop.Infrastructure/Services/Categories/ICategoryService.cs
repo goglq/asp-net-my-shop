@@ -9,5 +9,5 @@ public interface ICategoryService
 
     Task<Category> Get(Guid id);
     
-    Task Create(CategoryDTO categoryDto);
+    Task Create(CategoryDto categoryDto);
 }

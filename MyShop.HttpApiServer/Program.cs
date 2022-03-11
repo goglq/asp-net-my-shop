@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using MyShop.HttpApiServer.Infrastructure;
+using MyShop.Infrastructure;
 using MyShop.Infrastructure.Options;
 using MyShop.Infrastructure.Repositories;
 using MyShop.Infrastructure.Services.Categories;
@@ -24,6 +24,8 @@ try
     builder.Services
         .AddControllers()
         .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
     builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=myapp.db"));
 
@@ -39,6 +41,12 @@ try
     var app = builder.Build();
     Log.Information("Building is complete!");
 
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    
     app.UseCors(policy =>
         policy
             .WithOrigins("https://localhost:7074")

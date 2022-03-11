@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyShop.Infrastructure.Repositories;
 using MyShop.Infrastructure.Services.Categories;
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
@@ -13,7 +11,7 @@ public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
 
-    public CategoryController(ICategoryService categoryService, ICategoryRepository categoryRepository)
+    public CategoryController(ICategoryService categoryService)
     {
         _categoryService = categoryService;
     }
@@ -22,7 +20,6 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult<IEnumerable<Category>>> GetAll()
     {
         var categories = await _categoryService.GetAll();
-
         return Ok(categories);
     }
 
@@ -34,7 +31,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CategoryDTO categoryDto)
+    public async Task<IActionResult> Create(CategoryDto categoryDto)
     {
         await _categoryService.Create(categoryDto);
 
