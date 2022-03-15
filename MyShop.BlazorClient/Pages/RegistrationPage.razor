@@ -1,6 +1,10 @@
 ﻿@page "/registration"
 @using MyShop.SharedProject.DTOs
-@using System.ComponentModel.DataAnnotations
+@using System.Net
+@using MyShop.HttpApiClient
+
+@inject NavigationManager _navigationManager
+@inject IHttpApiClient _client
 
 <h3>Registration</h3>
 
@@ -22,7 +26,7 @@
         <label>Repeat Password</label>
         <InputText type="password" @bind-Value="_model.RepeatPassword"/>
     </div>
-    
+    <div>@_responseString</div>
     <input type="submit" value="Sign up"/>
     <ValidationSummary />
 </EditForm>
@@ -30,9 +34,20 @@
 @code {
     private readonly AccountDto _model = new();
 
-    private void ProcessValidSubmit()
+    private string _responseString = "";
+
+    private async Task ProcessValidSubmit()
     {
-        throw new NotImplementedException();
+        var response = await _client.RegisterAccount(_model);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _navigationManager.NavigateTo("/product");
+        }
+        else
+        {
+            _responseString = await response.Content.ReadAsStringAsync();
+        }
     }
 
 }

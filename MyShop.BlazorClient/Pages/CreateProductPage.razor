@@ -2,6 +2,7 @@
 @using MyShop.SharedProject.DTOs
 @using MyShop.HttpApiClient
 
+@inject NavigationManager _navigationManager
 @inject IHttpApiClient _httpApiClient
 
 <h3>Создание Товара</h3>
@@ -47,7 +48,12 @@
 
     private async Task ProcessValidForm()
     {
-        await _httpApiClient.Create(_productDto);
+        var response = await _httpApiClient.CreateProduct(_productDto);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _navigationManager.NavigateTo("/products");
+        }
     }
 
 }

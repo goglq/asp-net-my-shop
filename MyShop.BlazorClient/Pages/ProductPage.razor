@@ -32,7 +32,7 @@ else
     {
         await base.OnInitializedAsync();
 
-        Product = await _httpApiClient.Get(ProductId);
+        Product = await _httpApiClient.GetProduct(ProductId);
     }
 
 }

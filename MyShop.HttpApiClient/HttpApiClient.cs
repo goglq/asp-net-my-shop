@@ -16,11 +16,14 @@ public class HttpApiClient : IHttpApiClient
         _url = url;
     }
 
-    public Task<IReadOnlyList<Product>?> GetAll(int skip, int take) =>
+    public Task<IReadOnlyList<Product>?> GetProducts(int skip, int take) =>
         _httpClient.GetFromJsonAsync<IReadOnlyList<Product>>($"{_url}/product?skip={skip}&take={take}");
 
-    public Task<Product?> Get(Guid id) =>
+    public Task<Product?> GetProduct(Guid id) =>
         _httpClient.GetFromJsonAsync<Product>($"{_url}/product/{id}");
 
-    public Task Create(ProductDto product) => _httpClient.PostAsJsonAsync($"{_url}/product", product);
+    public Task<HttpResponseMessage> CreateProduct(ProductDto product) => _httpClient.PostAsJsonAsync($"{_url}/product", product);
+
+    public Task<HttpResponseMessage> RegisterAccount(AccountDto accountDto) =>
+        _httpClient.PostAsJsonAsync($"{_url}/account/register", accountDto);
 }

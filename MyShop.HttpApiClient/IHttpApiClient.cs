@@ -5,9 +5,11 @@ namespace MyShop.HttpApiClient;
 
 public interface IHttpApiClient
 {
-    Task<IReadOnlyList<Product>?> GetAll(int skip = 0, int take = 10);
+    Task<IReadOnlyList<Product>?> GetProducts(int skip = 0, int take = 10);
 
-    Task<Product?> Get(Guid id);
+    Task<Product?> GetProduct(Guid id);
 
-    Task Create(ProductDto product);
+    Task<HttpResponseMessage> CreateProduct(ProductDto product);
+
+    Task<HttpResponseMessage> RegisterAccount(AccountDto accountDto);
 }

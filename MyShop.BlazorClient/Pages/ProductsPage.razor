@@ -23,7 +23,7 @@ else
     {
         await base.OnInitializedAsync();
         
-        _products = await _apiClient.GetAll(0, 30);
+        _products = await _apiClient.GetProducts(0, 30);
         
          StateHasChanged();
     }
