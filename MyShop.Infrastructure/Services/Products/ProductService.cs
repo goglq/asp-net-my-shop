@@ -87,6 +87,9 @@ public class ProductService: IProductService
     {
         if (productDto.Price < 5)
             throw new ArgumentException("Product Price Cannot Be Less Than 5");
+
+        if (productDto.CategoryId is null)
+            throw new ArgumentNullException("CategoryId Cannot Be Null in product dto");
         
         var newProduct = new Product()
         {

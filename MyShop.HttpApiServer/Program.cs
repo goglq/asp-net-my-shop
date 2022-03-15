@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyShop.Infrastructure;
 using MyShop.Infrastructure.Options;
 using MyShop.Infrastructure.Repositories;
+using MyShop.Infrastructure.Services.Accounts;
 using MyShop.Infrastructure.Services.Categories;
 using MyShop.Infrastructure.Services.Products;
 using Serilog;
@@ -37,6 +38,7 @@ try
 
     builder.Services.AddScoped<IProductService, ProductService>();
     builder.Services.AddScoped<ICategoryService, CategoryService>();
+    builder.Services.AddScoped<IAccountService, AccountService>();
 
     var app = builder.Build();
     Log.Information("Building is complete!");

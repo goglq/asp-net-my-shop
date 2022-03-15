@@ -30,6 +30,8 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-**/Migrations/
+**/*.db
+**/*.db-shm
+**/*.db-wal
 
 packages/
