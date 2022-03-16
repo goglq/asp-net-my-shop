@@ -34,4 +34,7 @@ msbuild.wrn
 **/*.db-shm
 **/*.db-wal
 
+**/Migrations/
+**/Migrations/*
+
 packages/

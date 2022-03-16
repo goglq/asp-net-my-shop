@@ -1,0 +1,35 @@
+﻿@page "/login"
+@using MyShop.SharedProject.DTOs
+@using MyShop.HttpApiClient
+
+@inject IHttpApiClient _client
+
+<h3>LoginPage</h3>
+
+<EditForm Model="_model" OnValidSubmit="ProcessValidSubmit">
+    <DataAnnotationsValidator />
+    <label>Email</label>
+    <InputText @bind-Value="_model.Email"/>
+    <label>Password</label>
+    <InputText @bind-Value="_model.Password" type="password"/>
+    
+    <button>Login</button>
+    <ValidationSummary />
+    
+    @if (_message is not null)
+    {
+        <div>@_message</div>
+    }
+</EditForm>
+
+@code {
+    private readonly LoginAccountDto _model = new();
+
+    private string? _message; 
+    
+    private async Task ProcessValidSubmit()
+    {
+        var response = await _client.LoginAccount(_model);
+        _message = await response.Content.ReadAsStringAsync();
+    }
+}

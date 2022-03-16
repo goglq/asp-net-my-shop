@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyShop.Infrastructure;
 using MyShop.Infrastructure.Options;
@@ -6,6 +7,7 @@ using MyShop.Infrastructure.Repositories;
 using MyShop.Infrastructure.Services.Accounts;
 using MyShop.Infrastructure.Services.Categories;
 using MyShop.Infrastructure.Services.Products;
+using MyShop.Models;
 using Serilog;
 
 
@@ -32,11 +34,13 @@ try
 
     builder.Services.Configure<ProductServiceOptions>(builder.Configuration.GetSection("ProductServiceOptions"));
 
+    builder.Services.AddSingleton<IPasswordHasher<Account>, PasswordHasher<Account>>();
+    
     builder.Services.AddScoped<IProductRepository, ProductRepository>();
     builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
-    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IProductService, ProductService>();      
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
 

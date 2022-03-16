@@ -1,4 +1,5 @@
 ﻿using MyShop.Models;
+using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
 namespace MyShop.HttpApiClient;
@@ -11,5 +12,7 @@ public interface IHttpApiClient
 
     Task<HttpResponseMessage> CreateProduct(ProductDto product);
 
-    Task<HttpResponseMessage> RegisterAccount(AccountDto accountDto);
+    Task<HttpResponseMessage> RegisterAccount(RegistrationAccountDto registrationAccountDto);
+
+    Task<HttpResponseMessage> LoginAccount(LoginAccountDto loginAccountDto);
 }
