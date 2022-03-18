@@ -28,9 +28,10 @@ public class HttpApiClient : IHttpApiClient
     public Task<HttpResponseMessage> RegisterAccount(RegistrationAccountDto registrationAccountDto) =>
         _httpClient.PostAsJsonAsync($"{_url}/account/register", registrationAccountDto);
 
-    public async Task<HttpResponseMessage> LoginAccount(LoginAccountDto loginAccountDto)
+    public async Task<ResponseMessage<string>?> LoginAccount(LoginAccountDto loginAccountDto)
     {
-        var response = await _httpClient.PostAsJsonAsync($"{_url}/account/login", loginAccountDto);
-        return response;
+        using var response = await _httpClient.PostAsJsonAsync($"{_url}/account/login", loginAccountDto);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<ResponseMessage<string>>();
     }
 }

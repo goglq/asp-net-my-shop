@@ -30,6 +30,6 @@
     private async Task ProcessValidSubmit()
     {
         var response = await _client.LoginAccount(_model);
-        _message = await response.Content.ReadAsStringAsync();
+        _message = response?.Message;
     }
 }

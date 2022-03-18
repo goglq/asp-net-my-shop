@@ -19,7 +19,11 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
     
-    
+    /// <summary>
+    /// Registers Account With Unique Email
+    /// </summary>
+    /// <param name="registrationAccountDto">DTO that contains Name, Email, Password</param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<IActionResult> Registration(RegistrationAccountDto registrationAccountDto)
     {
@@ -30,6 +34,11 @@ public class AccountController : ControllerBase
         return Created(Uri.UriSchemeHttp, registrationAccountDto);
     }
 
+    /// <summary>
+    /// Logins Into the Account that has been sent 
+    /// </summary>
+    /// <param name="loginAccountDto">DTO that contains Email and Password</param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ActionResult<ResponseMessage<string>>> Login(LoginAccountDto loginAccountDto)
     {
@@ -38,11 +47,7 @@ public class AccountController : ControllerBase
             await _accountService.Login(loginAccountDto);
             return Ok(new ResponseMessage<string>("Login has succeeded", true));
         }
-        catch (NullReferenceException ex)
-        {
-            return Unauthorized(new ResponseMessage<string>(ex.Message, false));
-        }
-        catch (ArgumentException ex)
+        catch (Exception ex) when (ex is NullReferenceException | ex is ArgumentException)
         {
             return Unauthorized(new ResponseMessage<string>(ex.Message, false));
         }

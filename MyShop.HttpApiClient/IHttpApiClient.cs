@@ -14,5 +14,5 @@ public interface IHttpApiClient
 
     Task<HttpResponseMessage> RegisterAccount(RegistrationAccountDto registrationAccountDto);
 
-    Task<HttpResponseMessage> LoginAccount(LoginAccountDto loginAccountDto);
+    Task<ResponseMessage<string>?> LoginAccount(LoginAccountDto loginAccountDto);
 }
