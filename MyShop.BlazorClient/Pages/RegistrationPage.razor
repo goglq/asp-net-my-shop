@@ -34,19 +34,18 @@
 @code {
     private readonly RegistrationAccountDto _model = new();
 
-    private string _responseString = "";
+    private string? _responseString = "";
 
     private async Task ProcessValidSubmit()
     {
-        var response = await _client.RegisterAccount(_model);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            _navigationManager.NavigateTo("/product");
+            var response = await _client.RegisterAccount(_model);
+            _navigationManager.NavigateTo("/login");
         }
-        else
+        catch (Exception ex)
         {
-            _responseString = await response.Content.ReadAsStringAsync();
+            _responseString = ex.Message;
         }
     }
 

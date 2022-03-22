@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyShop.Infrastructure.Services.Products;
 using MyShop.Models;
+using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
 namespace MyShop.HttpApiServer.Controllers;
@@ -32,9 +33,20 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(ProductDto productDto)
+    public async Task<ActionResult<ResponseMessage<ProblemDetails>>> Create(ProductDto productDto)
     {
-        await _productService.Create(productDto);
-        return Created(Uri.UriSchemeHttp, null);
+        try
+        {
+            await _productService.Create(productDto);
+            return Created(Uri.UriSchemeHttp, new ResponseMessage<ProblemDetails>("Product Created!", true));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(ex.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = 404,
+            }));
+        }
     }
 }

@@ -25,13 +25,22 @@ public class AccountController : ControllerBase
     /// <param name="registrationAccountDto">DTO that contains Name, Email, Password</param>
     /// <returns></returns>
     [HttpPost("register")]
-    public async Task<IActionResult> Registration(RegistrationAccountDto registrationAccountDto)
+    public async Task<ActionResult<ResponseMessage<ProblemDetails>>> Registration(RegistrationAccountDto registrationAccountDto)
     {
-        _logger.LogInformation("Registering new account...");
-        if (await _accountService.IsEmailTaken(registrationAccountDto.Email!))
-            return BadRequest("Email is already taken");
-        await _accountService.Register(registrationAccountDto);
-        return Created(Uri.UriSchemeHttp, registrationAccountDto);
+        try
+        {
+            _logger.LogInformation("Registering new account...");
+            await _accountService.Register(registrationAccountDto);
+            return Created(Uri.UriSchemeHttp, new ResponseMessage<ProblemDetails>("Register has succeeded", true));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = 404,
+            }));
+        }
     }
 
     /// <summary>
@@ -40,16 +49,20 @@ public class AccountController : ControllerBase
     /// <param name="loginAccountDto">DTO that contains Email and Password</param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<ResponseMessage<string>>> Login(LoginAccountDto loginAccountDto)
+    public async Task<ActionResult<ResponseMessage<ProblemDetails>>> Login(LoginAccountDto loginAccountDto)
     {
         try
         {
             await _accountService.Login(loginAccountDto);
-            return Ok(new ResponseMessage<string>("Login has succeeded", true));
+            return Ok(new ResponseMessage<ProblemDetails>("Login has succeeded", true));
         }
-        catch (Exception ex) when (ex is NullReferenceException | ex is ArgumentException)
+        catch (Exception e) when (e is NullReferenceException or ArgumentException)
         {
-            return Unauthorized(new ResponseMessage<string>(ex.Message, false));
+            return Unauthorized(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Unauthorized",
+                Status = 401,
+            }));
         }
     }
 }

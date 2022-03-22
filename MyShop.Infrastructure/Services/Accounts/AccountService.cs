@@ -19,6 +19,11 @@ public class AccountService : IAccountService
     
     public async Task Register(RegistrationAccountDto registrationAccountDto)
     {
+        if (registrationAccountDto.Email is null)
+            throw new ArgumentNullException(nameof(registrationAccountDto.Email),"Email is null");
+        if (await IsEmailTaken(registrationAccountDto.Email))
+            throw new Exception("Email is taken");
+        
         var account = new Account()
         {
             Id = Guid.NewGuid(),

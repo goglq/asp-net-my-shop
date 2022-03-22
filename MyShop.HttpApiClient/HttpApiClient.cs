@@ -23,15 +23,12 @@ public class HttpApiClient : IHttpApiClient
     public Task<Product?> GetProduct(Guid id) =>
         _httpClient.GetFromJsonAsync<Product>($"{_url}/product/{id}");
 
-    public Task<HttpResponseMessage> CreateProduct(ProductDto product) => _httpClient.PostAsJsonAsync($"{_url}/product", product);
+    public Task<ResponseMessage<string>?> CreateProduct(ProductDto product) => 
+        _httpClient.PostAsJsonAsync<ProductDto, ResponseMessage<string>>($"{_url}/product", product);
 
-    public Task<HttpResponseMessage> RegisterAccount(RegistrationAccountDto registrationAccountDto) =>
-        _httpClient.PostAsJsonAsync($"{_url}/account/register", registrationAccountDto);
+    public Task<ResponseMessage<string>?> RegisterAccount(RegistrationAccountDto registrationAccountDto) =>
+        _httpClient.PostAsJsonAsync<RegistrationAccountDto, ResponseMessage<string>>($"{_url}/account/register", registrationAccountDto);
 
-    public async Task<ResponseMessage<string>?> LoginAccount(LoginAccountDto loginAccountDto)
-    {
-        using var response = await _httpClient.PostAsJsonAsync($"{_url}/account/login", loginAccountDto);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<ResponseMessage<string>>();
-    }
+    public Task<ResponseMessage<string>?> LoginAccount(LoginAccountDto loginAccountDto) => 
+        _httpClient.PostAsJsonAsync<LoginAccountDto, ResponseMessage<string>>($"{_url}/account/login", loginAccountDto);
 }

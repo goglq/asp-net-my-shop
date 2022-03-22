@@ -10,9 +10,9 @@ public interface IHttpApiClient
 
     Task<Product?> GetProduct(Guid id);
 
-    Task<HttpResponseMessage> CreateProduct(ProductDto product);
+    Task<ResponseMessage<string>?> CreateProduct(ProductDto product);
 
-    Task<HttpResponseMessage> RegisterAccount(RegistrationAccountDto registrationAccountDto);
+    Task<ResponseMessage<string>?> RegisterAccount(RegistrationAccountDto registrationAccountDto);
 
     Task<ResponseMessage<string>?> LoginAccount(LoginAccountDto loginAccountDto);
 }

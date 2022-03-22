@@ -71,7 +71,7 @@ try
     var app = builder.Build();
     Log.Information("Building is complete!");
 
-    app.UseMiddleware<EdgeGuardMiddleware>();
+    //app.UseMiddleware<EdgeGuardMiddleware>();
     
     if (app.Environment.IsDevelopment())
     {
