@@ -1,6 +1,9 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyShop.HttpApiServer.Middlewares;
 using MyShop.Infrastructure;
@@ -25,6 +28,33 @@ try
     builder.Host.UseSerilog((ctx, config) => 
         config.ReadFrom.Configuration(ctx.Configuration));
 
+    var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
+
+    builder.Services.AddSingleton(jwtConfig);
+    
+    builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                IssuerSigningKey = new SymmetricSecurityKey(jwtConfig.SigningKeyBytes),
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                RequireExpirationTime = true,
+                RequireSignedTokens = true,
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidAudiences = new [] { jwtConfig.Audience },
+                ValidIssuer = jwtConfig.Issuer
+            };
+        });
+    builder.Services.AddAuthorization();
+    
     builder.Services.AddCors();
     builder.Services
         .AddControllers()
@@ -36,18 +66,7 @@ try
         {
             Version = "v1",
             Title = "My Shop App",
-            Description = "An ASP.NET Core Web API for e-commerce",
-            // TermsOfService = new Uri("https://example.com/terms"),
-            // Contact = new OpenApiContact
-            // {
-            //     Name = "Example Contact",
-            //     Url = new Uri("https://example.com/contact")
-            // },
-            // License = new OpenApiLicense
-            // {
-            //     Name = "Example License",
-            //     Url = new Uri("https://example.com/license")
-            // }
+            Description = "An ASP.NET Core Web API for e-commerce"
         });
     });
 
@@ -83,6 +102,9 @@ try
     }
     
     app.UseMiddleware<HeaderLoggerMiddleware>();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
     
     app.UseCors(policy =>
         policy
