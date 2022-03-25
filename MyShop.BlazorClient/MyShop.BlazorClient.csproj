@@ -4,15 +4,23 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>0af2aeeb-631f-441e-92a6-f25108624c57</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MyShop.HttpApiClient\MyShop.HttpApiClient.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Pages\AccountPage.razor.cs">
+        <DependentUpon>AccountsPage.razor</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

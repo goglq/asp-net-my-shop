@@ -1,8 +1,6 @@
 ﻿@page "/product/{ProductId:guid}"
-@using MyShop.Models
-@using MyShop.HttpApiClient
 
-@inject IHttpApiClient _httpApiClient
+@inherits AppComponentBase
 
 @if (Product is not null)
 {
@@ -19,20 +17,4 @@
 else
 {
     <div>Loading</div>
-}
-
-@code {
-
-    [Parameter]
-    public Guid ProductId { get; set; }
-
-    private Product? Product { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        Product = await _httpApiClient.GetProduct(ProductId);
-    }
-
 }

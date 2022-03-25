@@ -1,8 +1,5 @@
 ﻿@page "/login"
-@using MyShop.SharedProject.DTOs
-@using MyShop.HttpApiClient
-
-@inject IHttpApiClient _client
+@inherits AppComponentBase;
 
 <h3>LoginPage</h3>
 
@@ -21,26 +18,3 @@
         <div>@_message</div>
     }
 </EditForm>
-
-@code {
-    private readonly LoginAccountDto _model = new();
-
-    private string? _message;
-
-    private async Task ProcessValidSubmit()
-    {
-        try
-        {
-            var response = await _client.LoginAccount(_model);
-            var token = response?.Model;
-            if (token is not null)
-            {
-                _client.SetToken(token);
-            }
-        }
-        catch (Exception ex)
-        {
-            _message = ex.Message;
-        }
-    }
-}

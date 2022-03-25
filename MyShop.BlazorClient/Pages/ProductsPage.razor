@@ -1,11 +1,6 @@
 ﻿@page "/product"
-@using MyShop.HttpApiClient
-@using MyShop.Models
-@using MyShop.BlazorClient.Components
 
-<h3>Products</h3>
-
-@inject IHttpApiClient _apiClient
+@inherits AppComponentBase
 
 @if (_products is null)
 {
@@ -14,17 +9,4 @@
 else
 {
     <ProductList Products="_products" />
-}
-
-@code {
-    private IReadOnlyList<Product>? _products; 
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        
-        _products = await _apiClient.GetProducts(0, 30);
-        
-         StateHasChanged();
-    }
 }

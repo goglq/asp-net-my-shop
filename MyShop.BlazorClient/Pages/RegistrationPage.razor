@@ -1,10 +1,5 @@
 ﻿@page "/registration"
-@using MyShop.SharedProject.DTOs
-@using System.Net
-@using MyShop.HttpApiClient
-
-@inject NavigationManager _navigationManager
-@inject IHttpApiClient _client
+@inherits AppComponentBase;
 
 <h3>Registration</h3>
 
@@ -30,23 +25,3 @@
     <input type="submit" value="Sign up"/>
     <ValidationSummary />
 </EditForm>
-
-@code {
-    private readonly RegistrationAccountDto _model = new();
-
-    private string? _responseString = "";
-
-    private async Task ProcessValidSubmit()
-    {
-        try
-        {
-            var response = await _client.RegisterAccount(_model);
-            _navigationManager.NavigateTo("/login");
-        }
-        catch (Exception ex)
-        {
-            _responseString = ex.Message;
-        }
-    }
-
-}

@@ -1,9 +1,5 @@
 ﻿@page "/createProduct"
-@using MyShop.SharedProject.DTOs
-@using MyShop.HttpApiClient
-
-@inject NavigationManager _navigationManager
-@inject IHttpApiClient _httpApiClient
+@inherits AppComponentBase;
 
 <h3>Создание Товара</h3>
 
@@ -42,21 +38,3 @@
         <ValidationSummary/>
     </EditForm>
 </div>
-
-@code {
-    private readonly ProductDto _productDto = new();
-
-    private async Task ProcessValidForm()
-    {
-        try
-        {
-            var response = await _httpApiClient.CreateProduct(_productDto);
-            _navigationManager.NavigateTo("/products");
-        }
-        catch(Exception ex)
-        {
-            // ignore
-        }
-    }
-
-}

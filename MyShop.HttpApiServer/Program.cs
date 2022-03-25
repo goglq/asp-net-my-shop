@@ -105,14 +105,14 @@ try
     
     app.UseMiddleware<HeaderLoggerMiddleware>();
 
-    app.UseAuthentication();
-    app.UseAuthorization();
-    
     app.UseCors(policy =>
         policy
             .WithOrigins("https://localhost:7074")
             .AllowAnyHeader()
             .AllowAnyMethod());
+    
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapControllers();
     
