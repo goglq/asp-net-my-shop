@@ -12,6 +12,7 @@ using MyShop.Infrastructure.Repositories;
 using MyShop.Infrastructure.Services.Accounts;
 using MyShop.Infrastructure.Services.Categories;
 using MyShop.Infrastructure.Services.Products;
+using MyShop.Infrastructure.Services.Tokens;
 using MyShop.Models;
 using Serilog;
 
@@ -83,6 +84,7 @@ try
     builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
+    builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IProductService, ProductService>();      
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IAccountService, AccountService>();

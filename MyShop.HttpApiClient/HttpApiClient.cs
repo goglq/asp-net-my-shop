@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using MyShop.Models;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
@@ -16,6 +17,14 @@ public class HttpApiClient : IHttpApiClient
         _httpClient = httpClient ?? new HttpClient();
         _url = url;
     }
+
+    public void SetToken(string token)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    public Task<IReadOnlyList<Account>?> GetAccounts() =>
+        _httpClient.GetFromJsonAsync<IReadOnlyList<Account>>($"{_url}/account/");
 
     public Task<IReadOnlyList<Product>?> GetProducts(int skip, int take) =>
         _httpClient.GetFromJsonAsync<IReadOnlyList<Product>>($"{_url}/product?skip={skip}&take={take}");

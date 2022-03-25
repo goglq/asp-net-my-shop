@@ -1,0 +1,44 @@
+﻿@page "/accounts"
+@using MyShop.HttpApiClient
+@using MyShop.Models
+
+@inject IHttpApiClient _client
+
+<h3>AccountsPage</h3>
+
+@if (_accounts is not null)
+{
+    @foreach(var account in _accounts)
+    {
+        <div>
+            @account.Name
+        </div>
+    }
+}
+
+@if (_isNotAllowed)
+{
+    <div>
+        Not Permitted
+    </div>
+}
+
+@code {
+
+    private IReadOnlyList<Account>? _accounts;
+
+    private bool _isNotAllowed;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _accounts = await _client.GetAccounts();
+        }
+        catch (Exception _)
+        {
+            _isNotAllowed = true;
+        }
+    }
+
+}

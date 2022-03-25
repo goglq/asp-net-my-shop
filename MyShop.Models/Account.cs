@@ -15,4 +15,7 @@ public class Account : IEntity
     
     [Required]
     public string Password { get; set; }
+    
+    [Required]
+    public string Role { get; set; }
 }

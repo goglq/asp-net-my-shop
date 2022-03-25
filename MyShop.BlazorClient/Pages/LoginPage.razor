@@ -25,14 +25,18 @@
 @code {
     private readonly LoginAccountDto _model = new();
 
-    private string? _message; 
-    
+    private string? _message;
+
     private async Task ProcessValidSubmit()
     {
         try
         {
             var response = await _client.LoginAccount(_model);
-            _message = response?.Message;
+            var token = response?.Model;
+            if (token is not null)
+            {
+                _client.SetToken(token);
+            }
         }
         catch (Exception ex)
         {

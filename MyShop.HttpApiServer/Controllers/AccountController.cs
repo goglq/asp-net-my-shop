@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyShop.Infrastructure.Services.Accounts;
+using MyShop.Models;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
@@ -18,6 +20,13 @@ public class AccountController : ControllerBase
         _accountService = accountService;
         _logger = logger;
     }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Account>>> GetAll()
+    {
+        return Ok(await _accountService.GetAccounts());
+    }
     
     /// <summary>
     /// Registers Account With Unique Email
@@ -25,13 +34,13 @@ public class AccountController : ControllerBase
     /// <param name="registrationAccountDto">DTO that contains Name, Email, Password</param>
     /// <returns></returns>
     [HttpPost("register")]
-    public async Task<ActionResult<ResponseMessage<ProblemDetails>>> Registration(RegistrationAccountDto registrationAccountDto)
+    public async Task<ActionResult<ResponseMessage<string>>> Registration(RegistrationAccountDto registrationAccountDto)
     {
         try
         {
             _logger.LogInformation("Registering new account...");
-            await _accountService.Register(registrationAccountDto);
-            return Created(Uri.UriSchemeHttp, new ResponseMessage<ProblemDetails>("Register has succeeded", true));
+            var token = await _accountService.Register(registrationAccountDto);
+            return Created(Uri.UriSchemeHttp, new ResponseMessage<string>("Register has succeeded", true, token));
         }
         catch (Exception e)
         {
@@ -49,12 +58,12 @@ public class AccountController : ControllerBase
     /// <param name="loginAccountDto">DTO that contains Email and Password</param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<ResponseMessage<ProblemDetails>>> Login(LoginAccountDto loginAccountDto)
+    public async Task<ActionResult<ResponseMessage<string>>> Login(LoginAccountDto loginAccountDto)
     {
         try
         {
-            await _accountService.Login(loginAccountDto);
-            return Ok(new ResponseMessage<ProblemDetails>("Login has succeeded", true));
+            var token = await _accountService.Login(loginAccountDto);
+            return Ok(new ResponseMessage<string>("Login has succeeded", true, token));
         }
         catch (Exception e) when (e is NullReferenceException or ArgumentException)
         {

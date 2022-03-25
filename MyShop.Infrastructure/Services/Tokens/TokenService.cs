@@ -22,7 +22,8 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(new []
             {
-                new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                new Claim("role", account.Role)
             }),
             Expires = DateTime.UtcNow.Add(_jwtConfig.Lifetime),
             Audience = _jwtConfig.Audience,

@@ -2,6 +2,7 @@
 using MyShop.Models;
 using MyShop.SharedProject.DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyShop.Infrastructure.Services.Tokens;
 using MyShop.SharedProject;
 
@@ -21,7 +22,7 @@ public class AccountService : IAccountService
         _accountRepository = accountRepository;
         _passwordHasher = passwordHasher;
     }
-    
+
     public async Task<string> Register(RegistrationAccountDto registrationAccountDto)
     {
         if (registrationAccountDto.Email is null)
@@ -34,7 +35,8 @@ public class AccountService : IAccountService
             Id = Guid.NewGuid(),
             Name = registrationAccountDto.Name,
             Email = registrationAccountDto.Email,
-            Password = registrationAccountDto.Password
+            Password = registrationAccountDto.Password,
+            Role = "user"
         };
 
         var hashedPassword = _passwordHasher.HashPassword(account, registrationAccountDto.Password);
@@ -62,4 +64,7 @@ public class AccountService : IAccountService
         var account = await _accountRepository.FindByEmail(email);
         return account is not null;
     }
+
+    public async Task<IEnumerable<Account>> GetAccounts() => 
+        await _accountRepository.GetAll().ToListAsync();
 }

@@ -6,6 +6,10 @@ namespace MyShop.HttpApiClient;
 
 public interface IHttpApiClient
 {
+    void SetToken(string token);
+
+    Task<IReadOnlyList<Account>?> GetAccounts();
+
     Task<IReadOnlyList<Product>?> GetProducts(int skip = 0, int take = 10);
 
     Task<Product?> GetProduct(Guid id);
