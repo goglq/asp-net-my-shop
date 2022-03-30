@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyShop.Infrastructure.Services.Products;
-using MyShop.Models;
+using MyShop.Core.Interfaces.Services;
+using MyShop.Core.Models;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 

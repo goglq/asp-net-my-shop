@@ -1,5 +1,6 @@
 ﻿@page "/product"
 
+@using MyShop.Components
 @inherits AppComponentBase
 
 @if (_products is null)
@@ -8,5 +9,5 @@
 }
 else
 {
-    <ProductList Products="_products" />
+    <ProductList Products=@_products />
 }

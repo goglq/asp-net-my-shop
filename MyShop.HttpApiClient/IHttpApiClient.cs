@@ -1,4 +1,5 @@
-﻿using MyShop.Models;
+﻿using MyShop.Core.Models;
+using MyShop.Core;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 

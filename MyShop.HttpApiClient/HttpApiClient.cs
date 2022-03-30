@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using MyShop.Models;
+using MyShop.Core.Models;
+using MyShop.Core;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 

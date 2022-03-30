@@ -1,19 +1,19 @@
-using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyShop.Core.Interfaces;
+using MyShop.Core.Interfaces.Repositories;
+using MyShop.Core.Interfaces.Services;
+using MyShop.Core.Models;
+using MyShop.Core.Options;
+using MyShop.Core.Services;
 using MyShop.HttpApiServer.Middlewares;
-using MyShop.Infrastructure;
-using MyShop.Infrastructure.Options;
+using MyShop.Infrastructure.Databases;
 using MyShop.Infrastructure.Repositories;
-using MyShop.Infrastructure.Services.Accounts;
-using MyShop.Infrastructure.Services.Categories;
-using MyShop.Infrastructure.Services.Products;
-using MyShop.Infrastructure.Services.Tokens;
-using MyShop.Models;
+using MyShop.Infrastructure.UnitOfWork;
 using Serilog;
 
 
@@ -30,6 +30,8 @@ try
         config.ReadFrom.Configuration(ctx.Configuration));
 
     var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
+
+    var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
 
     builder.Services.AddSingleton(jwtConfig);
     
@@ -71,23 +73,24 @@ try
         });
     });
 
-    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=myapp.db"));
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
     builder.Services.Configure<ProductServiceOptions>(builder.Configuration.GetSection("ProductServiceOptions"));
 
     builder.Services.AddSingleton<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
-    builder.Services.AddScoped<HeaderLoggerMiddleware>();
-    builder.Services.AddScoped<EdgeGuardMiddleware>();
-    
     builder.Services.AddScoped<IProductRepository, ProductRepository>();
     builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+    builder.Services.AddScoped<ICartRepository, CartRepository>();
 
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IProductService, ProductService>();      
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
+    builder.Services.AddScoped<ICartService, CartService>();
+
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
     var app = builder.Build();
     Log.Information("Building is complete!");
@@ -107,7 +110,7 @@ try
 
     app.UseCors(policy =>
         policy
-            .WithOrigins("https://localhost:7074")
+            .WithOrigins(corsSettings.Origins.ToArray())
             .AllowAnyHeader()
             .AllowAnyMethod());
     

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyShop.Infrastructure.Services.Categories;
-using MyShop.Models;
+using MyShop.Core.Interfaces.Services;
+using MyShop.Core.Models;
 using MyShop.SharedProject.DTOs;
 
 namespace MyShop.HttpApiServer.Controllers;

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyShop.Models\MyShop.Models.csproj" />
+      <ProjectReference Include="..\MyShop.Core\MyShop.Core.csproj" />
       <ProjectReference Include="..\MyShop.SharedProject\MyShop.SharedProject.csproj" />
     </ItemGroup>
 

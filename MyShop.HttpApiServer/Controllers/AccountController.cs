@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyShop.Infrastructure.Services.Accounts;
-using MyShop.Models;
+using MyShop.Core.Interfaces.Services;
+using MyShop.Core.Models;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
@@ -39,7 +39,7 @@ public class AccountController : ControllerBase
         try
         {
             _logger.LogInformation("Registering new account...");
-            var token = await _accountService.Register(registrationAccountDto);
+            var token = await _accountService.Register(registrationAccountDto.Email, registrationAccountDto.Name, registrationAccountDto.Password);
             return Created(Uri.UriSchemeHttp, new ResponseMessage<string>("Register has succeeded", true, token));
         }
         catch (Exception e)
@@ -62,7 +62,7 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var token = await _accountService.Login(loginAccountDto);
+            var token = await _accountService.Login(loginAccountDto.Email, loginAccountDto.Password);
             return Ok(new ResponseMessage<string>("Login has succeeded", true, token));
         }
         catch (Exception e) when (e is NullReferenceException or ArgumentException)

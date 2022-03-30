@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using MyShop.Models;
+﻿using MyShop.Core.Models;
 
 namespace MyShop.BlazorClient.Pages;
 
-public partial class AccountsPage
+public partial class AccountsPage : AppComponentBase
 {
     private IReadOnlyList<Account>? _accounts;
 

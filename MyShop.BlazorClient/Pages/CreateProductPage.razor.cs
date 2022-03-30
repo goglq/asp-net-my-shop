@@ -16,7 +16,7 @@ public partial class CreateProductPage
             var response = await _client.CreateProduct(_productDto);
             _navigationManager.NavigateTo("/products");
         }
-        catch(Exception ex)
+        catch(Exception _)
         {
             // ignore
         }

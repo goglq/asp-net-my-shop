@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MyShop.Models;
+using MyShop.Core.Models;
 
 namespace MyShop.BlazorClient.Pages;
 
