@@ -15,4 +15,11 @@ public class CartService : ICartService
     
     public Task<IEnumerable<CartItem>> GetCartByUserId(Guid id) => 
         _unitOfWork.CartRepository.GetCartItemsByUserId(id);
+
+    public async Task AddProduct(Guid accountId, Guid productId)
+    {
+        var cart = await _unitOfWork.CartRepository.GetCartByUserId(accountId);
+        await _unitOfWork.CartItemRepository.AddProduct(cart, productId);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

@@ -12,5 +12,7 @@ public interface IUnitOfWork
     
     ICartRepository CartRepository { get; }
     
+    ICartItemRepository CartItemRepository { get; }
+    
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

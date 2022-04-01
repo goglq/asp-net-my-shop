@@ -83,6 +83,7 @@ try
     builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
     builder.Services.AddScoped<ICartRepository, CartRepository>();
+    builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IProductService, ProductService>();      

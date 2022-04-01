@@ -34,9 +34,32 @@ public class CartController : ControllerBase
         {
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
-                Title = "Bad Request",
+                Title = "Not Found",
                 Status = 404
             }));
         }
     }
+
+    [HttpPost("addProduct")]
+    public async Task<ActionResult<ResponseMessage<string>>> AddProduct(string productId)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userGuid = Guid.Parse(userId);
+            var productGuid = Guid.Parse(productId);
+            await _cartService.AddProduct(userGuid, productGuid);
+            return Ok(new ResponseMessage<string>("Product Added", true, "Success"));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = 400
+            }));
+        }
+    }
+    
+    
 }

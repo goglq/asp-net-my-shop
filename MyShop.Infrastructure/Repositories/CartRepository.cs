@@ -17,4 +17,30 @@ public class CartRepository : EfRepository<Cart>, ICartRepository
         var cart = await Entities.Include(cart => cart.CartItems).FirstAsync(cart => cart.AccountId == id);
         return cart.CartItems.ToList();
     }
+
+    public Task<Cart> GetCartByUserId(Guid id) => 
+        Entities.Include(cart => cart.CartItems).FirstAsync(cart => cart.AccountId == id);
+    
+    public async Task AddProduct(Guid accountId, Guid productId)
+    {
+        var cart = await Entities.Include(cart => cart.CartItems).FirstAsync(cart => cart.AccountId == accountId);
+
+        if (cart.CartItems.Any() && cart.CartItems.Any(cartItem => cartItem.ProductId == productId))
+        {
+            var cartItem = cart.CartItems.First(cartItem => cartItem.ProductId == productId);
+            cartItem.Count++;
+        }
+        else
+        {
+            var newCartItem = new CartItem()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = productId,
+                Count = 1
+            };
+            cart.CartItems.Add(newCartItem);
+        }
+        
+        Update(cart);
+    }
 }

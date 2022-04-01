@@ -14,15 +14,18 @@ public class UnitOfWork : IUnitOfWork, IAsyncDisposable
     public IProductRepository ProductRepository { get; }
     
     public ICartRepository CartRepository { get; }
+    
+    public ICartItemRepository CartItemRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }
 
-    public UnitOfWork(IAccountRepository accountRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, ICartRepository cartRepository, AppDbContext context)
+    public UnitOfWork(IAccountRepository accountRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, ICartRepository cartRepository, ICartItemRepository cartItemRepository, AppDbContext context)
     {
         AccountRepository = accountRepository;
         ProductRepository = productRepository;
         CategoryRepository = categoryRepository;
         CartRepository = cartRepository;
+        CartItemRepository = cartItemRepository;
         _context = context;
     }
 
