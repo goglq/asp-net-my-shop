@@ -14,5 +14,7 @@ public interface IUnitOfWork
     
     ICartItemRepository CartItemRepository { get; }
     
+    IConfirmationCodeRepository ConfirmationCodeRepository { get; }
+    
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

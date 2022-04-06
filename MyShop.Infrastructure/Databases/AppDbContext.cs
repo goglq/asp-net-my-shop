@@ -14,6 +14,8 @@ public class AppDbContext : DbContext
     public DbSet<Cart> Carts => Set<Cart>();
 
     public DbSet<CartItem> CartItems => Set<CartItem>();
+
+    public DbSet<ConfirmationCode> ConfirmationCodes => Set<ConfirmationCode>();
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

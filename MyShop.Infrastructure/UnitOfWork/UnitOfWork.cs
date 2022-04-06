@@ -16,16 +16,26 @@ public class UnitOfWork : IUnitOfWork, IAsyncDisposable
     public ICartRepository CartRepository { get; }
     
     public ICartItemRepository CartItemRepository { get; }
+    
+    public IConfirmationCodeRepository ConfirmationCodeRepository { get; }
 
     public ICategoryRepository CategoryRepository { get; }
 
-    public UnitOfWork(IAccountRepository accountRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, ICartRepository cartRepository, ICartItemRepository cartItemRepository, AppDbContext context)
+    public UnitOfWork(
+        IAccountRepository accountRepository, 
+        IProductRepository productRepository, 
+        ICategoryRepository categoryRepository, 
+        ICartRepository cartRepository, 
+        ICartItemRepository cartItemRepository, 
+        IConfirmationCodeRepository confirmationCodeRepository,
+        AppDbContext context)
     {
         AccountRepository = accountRepository;
         ProductRepository = productRepository;
         CategoryRepository = categoryRepository;
         CartRepository = cartRepository;
         CartItemRepository = cartItemRepository;
+        ConfirmationCodeRepository = confirmationCodeRepository;
         _context = context;
     }
 

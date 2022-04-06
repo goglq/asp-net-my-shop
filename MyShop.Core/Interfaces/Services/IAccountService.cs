@@ -4,11 +4,13 @@ namespace MyShop.Core.Interfaces.Services;
 
 public interface IAccountService
 {
-    public Task<string> Register(string email, string name, string password);
+    Task<string> Register(string email, string name, string password);
 
-    public Task<string> Login(string email, string password);
+    Task<string> Login(string email, string password);
 
-    public Task<bool> IsEmailTaken(string email);
+    Task<Guid> LoginTwoFactor(string email, string password);
 
-    public Task<IEnumerable<Account>> GetAccounts();
+    Task<bool> IsEmailTaken(string email);
+
+    Task<IEnumerable<Account>> GetAccounts();
 }

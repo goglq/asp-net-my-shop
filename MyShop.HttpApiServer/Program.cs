@@ -84,12 +84,14 @@ try
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
     builder.Services.AddScoped<ICartRepository, CartRepository>();
     builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+    builder.Services.AddScoped<IConfirmationCodeRepository, ConfirmationCodeRepository>();
 
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IProductService, ProductService>();      
     builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<ICartService, CartService>();
+    builder.Services.AddScoped<ITwoFactorService, TwoFactorService>();
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -132,3 +134,4 @@ finally
     Log.Information("Shutdown is complete!");
     Log.CloseAndFlush();
 }
+

@@ -13,7 +13,7 @@ public class AccountService : IAccountService
     private readonly IPasswordHasher<Account> _passwordHasher;
     
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public AccountService(ITokenService tokenService, IUnitOfWork unitOfWork, IPasswordHasher<Account> passwordHasher)
     {
         _tokenService = tokenService;
@@ -62,6 +62,17 @@ public class AccountService : IAccountService
             throw new ArgumentException("Incorrect password");
         var token = _tokenService.GenerateToken(account);
         return token;
+    }
+
+    public async Task<Guid> LoginTwoFactor(string email, string password)
+    {
+        var account = await _unitOfWork.AccountRepository.FindByEmail(email);
+        if (account is null)
+            throw new NullReferenceException("Account with this email does not exist");
+        var verifyResult = _passwordHasher.VerifyHashedPassword(account, account.Password, password);
+        if (verifyResult == PasswordVerificationResult.Failed)
+            throw new ArgumentException("Incorrect password");
+        return account.Id;
     }
 
     public async Task<bool> IsEmailTaken(string email)

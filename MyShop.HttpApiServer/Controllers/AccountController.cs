@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
@@ -12,13 +13,16 @@ namespace MyShop.HttpApiServer.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
+
+    private readonly ITwoFactorService _twoFactorService;
     
     private readonly ILogger<AccountController> _logger;
 
-    public AccountController(IAccountService accountService, ILogger<AccountController> logger)
+    public AccountController(IAccountService accountService, ITwoFactorService twoFactorService, ILogger<AccountController> logger)
     {
         _accountService = accountService;
         _logger = logger;
+        _twoFactorService = twoFactorService;
     }
 
     [Authorize(Roles = "admin")]
@@ -27,11 +31,11 @@ public class AccountController : ControllerBase
     {
         return Ok(await _accountService.GetAccounts());
     }
-    
-    /// <summary>
-    /// Registers Account With Unique Email
-    /// </summary>
+
     /// <param name="registrationAccountDto">DTO that contains Name, Email, Password</param>
+    /// <summary>
+    ///     Registers Account With Unique Email
+    /// </summary>
     /// <returns></returns>
     [HttpPost("register")]
     public async Task<ActionResult<ResponseMessage<string>>> Registration(RegistrationAccountDto registrationAccountDto)
@@ -71,6 +75,42 @@ public class AccountController : ControllerBase
             {
                 Title = "Unauthorized",
                 Status = 401,
+            }));
+        }
+    }
+
+    [HttpGet("loginTwoFactor")]
+    public async Task<ActionResult<ResponseMessage<Guid>>> LoginTwoFactor(LoginAccountDto loginAccountDto)
+    {
+        try
+        {
+            var userId = await _accountService.LoginTwoFactor(loginAccountDto.Email, loginAccountDto.Password);
+            var code = _twoFactorService.GenerateCode(6);
+            var codeGuid = await _twoFactorService.CreateCode(userId, code);
+            return Ok(new ResponseMessage<Guid>("Two Factor Code", true, codeGuid));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = 400
+            }));
+        }
+    }
+
+    public async Task<ActionResult> ConfirmTwoFactor(string codeId, string code)
+    {
+        try
+        {
+            var 
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = 400
             }));
         }
     }
