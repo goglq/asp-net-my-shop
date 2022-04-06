@@ -35,4 +35,10 @@ public class TwoFactorService : ITwoFactorService
         await _unitOfWork.SaveChangesAsync();
         return confirmationGuid;
     }
+
+    public async Task<bool> IsCorrectCode(Guid codeId, int code)
+    {
+        var confirmationCode = await _unitOfWork.ConfirmationCodeRepository.GetById(codeId);
+        return !(DateTime.Now > confirmationCode.CreationDate.Add(TimeSpan.FromMinutes(2)) || confirmationCode.Code != code);
+    }
 }

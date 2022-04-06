@@ -10,6 +10,7 @@ using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
 using MyShop.Core.Options;
 using MyShop.Core.Services;
+using MyShop.HttpApiServer.Filters;
 using MyShop.HttpApiServer.Middlewares;
 using MyShop.Infrastructure.Databases;
 using MyShop.Infrastructure.Repositories;
@@ -60,8 +61,17 @@ try
     
     builder.Services.AddCors();
     builder.Services
-        .AddControllers()
+        .AddControllers(options =>
+        {
+            options.Filters.Add<MyValidationFilter>();
+            options.Filters.Add<MyShopExceptionFilter>();
+        })
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        })
         .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
     {

@@ -75,6 +75,14 @@ public class AccountService : IAccountService
         return account.Id;
     }
 
+    public async Task<Account> GetAccountByConfirmationCodeId(Guid id)
+    {
+        var confirmationCode = await _unitOfWork.ConfirmationCodeRepository.FindById(id);
+        if (confirmationCode is null) throw new ArgumentNullException("Confirmation Code does not exist.");
+        var account = await _unitOfWork.ConfirmationCodeRepository.GetUserByCodeId(id);
+        return account;
+    }
+
     public async Task<bool> IsEmailTaken(string email)
     {
         var account = await _unitOfWork.AccountRepository.FindByEmail(email);

@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
@@ -99,11 +98,13 @@ public class AccountController : ControllerBase
         }
     }
 
-    public async Task<ActionResult> ConfirmTwoFactor(string codeId, string code)
+    [HttpPost("confirmCode")]
+    public async Task<ActionResult<ResponseMessage<string>>> ConfirmTwoFactor(Guid codeId, int code)
     {
         try
         {
-            var 
+            var isCorrect = await _twoFactorService.IsCorrectCode(codeId, code);
+            return Ok();
         }
         catch (Exception e)
         {

@@ -8,5 +8,5 @@ public interface ITwoFactorService
 
     Task<Guid> CreateCode(Guid accountId, int code);
 
-    Task<bool> Is(Guid codeId);
+    Task<bool> IsCorrectCode(Guid codeId, int code);
 }
