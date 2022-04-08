@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
+using MyShop.HttpApiServer.Filters;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
@@ -8,6 +9,7 @@ namespace MyShop.HttpApiServer.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[ServiceFilter(typeof(ProfileActionFilter))]
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -44,7 +46,7 @@ public class ProductController : ControllerBase
             return BadRequest(new ResponseMessage<ProblemDetails>(ex.Message, false, new ProblemDetails()
             {
                 Title = "Bad Request",
-                Status = 404,
+                Status = StatusCodes.Status400BadRequest,
             }));
         }
     }

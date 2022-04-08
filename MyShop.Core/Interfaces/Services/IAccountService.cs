@@ -13,4 +13,6 @@ public interface IAccountService
     Task<bool> IsEmailTaken(string email);
 
     Task<IEnumerable<Account>> GetAccounts();
+    
+    Task<bool> CheckIsBannedById(Guid userId);
 }

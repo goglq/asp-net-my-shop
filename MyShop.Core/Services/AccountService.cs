@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyShop.Core.Exceptions;
 using MyShop.Core.Interfaces;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
@@ -26,7 +27,7 @@ public class AccountService : IAccountService
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email is empty", nameof(email));
         if (await IsEmailTaken(email))
-            throw new Exception("Email is taken");
+            throw new EmailIsTakenException();
         
         var account = new Account()
         {
@@ -56,10 +57,10 @@ public class AccountService : IAccountService
     {
         var account = await _unitOfWork.AccountRepository.FindByEmail(email);
         if (account is null)
-            throw new NullReferenceException("Account with this email does not exist");
+            throw new AccountWithEmailNotExistException();
         var verifyResult = _passwordHasher.VerifyHashedPassword(account, account.Password, password);
         if (verifyResult == PasswordVerificationResult.Failed)
-            throw new ArgumentException("Incorrect password");
+            throw new InvalidPasswordException();
         var token = _tokenService.GenerateToken(account);
         return token;
     }
@@ -68,17 +69,17 @@ public class AccountService : IAccountService
     {
         var account = await _unitOfWork.AccountRepository.FindByEmail(email);
         if (account is null)
-            throw new NullReferenceException("Account with this email does not exist");
+            throw new AccountWithEmailNotExistException();
         var verifyResult = _passwordHasher.VerifyHashedPassword(account, account.Password, password);
         if (verifyResult == PasswordVerificationResult.Failed)
-            throw new ArgumentException("Incorrect password");
+            throw new InvalidPasswordException();
         return account.Id;
     }
 
     public async Task<Account> GetAccountByConfirmationCodeId(Guid id)
     {
         var confirmationCode = await _unitOfWork.ConfirmationCodeRepository.FindById(id);
-        if (confirmationCode is null) throw new ArgumentNullException("Confirmation Code does not exist.");
+        if (confirmationCode is null) throw new ConfirmationCodeDoesNotExistException();
         var account = await _unitOfWork.ConfirmationCodeRepository.GetUserByCodeId(id);
         return account;
     }
@@ -91,4 +92,10 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<Account>> GetAccounts() => 
         await _unitOfWork.AccountRepository.GetAll().ToListAsync();
+
+    public async Task<bool> CheckIsBannedById(Guid userId)
+    {
+        var account = await _unitOfWork.AccountRepository.GetById(userId);
+        return account.IsBanned;
+    }
 }

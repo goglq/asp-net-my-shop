@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MyShop.Core.Exceptions;
 using MyShop.Core.Interfaces;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
@@ -87,11 +88,8 @@ public class ProductService: IProductService
     public async Task Create(ProductDto productDto)
     {
         if (productDto.Price < 5)
-            throw new ArgumentException("Product Price Cannot Be Less Than 5");
+            throw new ProductPoorPriceException();
 
-        if (productDto.CategoryId is null)
-            throw new ArgumentNullException("CategoryId Cannot Be Null in product dto");
-        
         var newProduct = new Product()
         {
             Id = Guid.NewGuid(),

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Core.Interfaces.Services;
 using MyShop.Core.Models;
+using MyShop.HttpApiServer.Filters;
 using MyShop.SharedProject;
 using MyShop.SharedProject.DTOs;
 
@@ -49,8 +50,8 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
-                Title = "Bad Request",
-                Status = 404,
+                Title = "Not Found",
+                Status = StatusCodes.Status404NotFound,
             }));
         }
     }
@@ -61,6 +62,7 @@ public class AccountController : ControllerBase
     /// <param name="loginAccountDto">DTO that contains Email and Password</param>
     /// <returns></returns>
     [HttpPost("login")]
+    [TypeFilter(typeof(ActionParameterLoggerFilter))]
     public async Task<ActionResult<ResponseMessage<string>>> Login(LoginAccountDto loginAccountDto)
     {
         try
@@ -73,7 +75,7 @@ public class AccountController : ControllerBase
             return Unauthorized(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
                 Title = "Unauthorized",
-                Status = 401,
+                Status = StatusCodes.Status401Unauthorized,
             }));
         }
     }
@@ -93,7 +95,7 @@ public class AccountController : ControllerBase
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
                 Title = "Bad Request",
-                Status = 400
+                Status = StatusCodes.Status400BadRequest
             }));
         }
     }
@@ -111,7 +113,7 @@ public class AccountController : ControllerBase
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
                 Title = "Bad Request",
-                Status = 400
+                Status = StatusCodes.Status400BadRequest
             }));
         }
     }

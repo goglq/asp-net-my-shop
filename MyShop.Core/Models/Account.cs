@@ -18,4 +18,7 @@ public class Account : IEntity
     
     [Required]
     public string Role { get; set; }
+    
+    [Required]
+    public bool IsBanned { get; set; }
 }

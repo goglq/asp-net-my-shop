@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -65,6 +66,7 @@ try
         {
             options.Filters.Add<MyValidationFilter>();
             options.Filters.Add<MyShopExceptionFilter>();
+            options.Filters.Add<IsBannedCheckFilterFactory>();
         })
         .ConfigureApiBehaviorOptions(options =>
         {
@@ -102,8 +104,11 @@ try
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<ICartService, CartService>();
     builder.Services.AddScoped<ITwoFactorService, TwoFactorService>();
+    builder.Services.AddScoped<IEmailSender, MailKitSenderService>();
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+    builder.Services.AddScoped<ProfileActionFilter>();
 
     var app = builder.Build();
     Log.Information("Building is complete!");

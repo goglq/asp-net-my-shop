@@ -35,7 +35,7 @@ public class CartController : ControllerBase
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
                 Title = "Not Found",
-                Status = 404
+                Status = StatusCodes.Status404NotFound
             }));
         }
     }
@@ -56,7 +56,7 @@ public class CartController : ControllerBase
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
                 Title = "Bad Request",
-                Status = 400
+                Status = StatusCodes.Status400BadRequest
             }));
         }
     }
