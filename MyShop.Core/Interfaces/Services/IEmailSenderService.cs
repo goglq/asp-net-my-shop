@@ -4,5 +4,7 @@ namespace MyShop.Core.Interfaces.Services;
 
 public interface IEmailSender
 {
-    Task SendEmail(MimeMessage mimeMessage);
+    void SendEmail(MimeMessage mimeMessage);
+
+    MimeMessage CreateMessage(string from, string to, string subject, string body);
 }

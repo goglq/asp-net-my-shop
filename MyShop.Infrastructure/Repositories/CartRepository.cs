@@ -14,7 +14,7 @@ public class CartRepository : EfRepository<Cart>, ICartRepository
 
     public async Task<IEnumerable<CartItem>> GetCartItemsByUserId(Guid id)
     {
-        var cart = await Entities.Include(cart => cart.CartItems).FirstAsync(cart => cart.AccountId == id);
+        var cart = await Entities.Include(cart => cart.CartItems).ThenInclude(cartItem => cartItem.Product).FirstAsync(cart => cart.AccountId == id);
         return cart.CartItems.ToList();
     }
 

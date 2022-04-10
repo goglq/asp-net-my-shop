@@ -88,6 +88,7 @@ try
     builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
     builder.Services.Configure<ProductServiceOptions>(builder.Configuration.GetSection("ProductServiceOptions"));
+    builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("SmtpConfig"));
 
     builder.Services.AddSingleton<IPasswordHasher<Account>, PasswordHasher<Account>>();
 

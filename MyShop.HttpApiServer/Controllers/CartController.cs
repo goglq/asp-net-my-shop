@@ -60,6 +60,24 @@ public class CartController : ControllerBase
             }));
         }
     }
-    
-    
+
+    [HttpPost("order")]
+    public async Task<ActionResult<ResponseMessage<string>>> Order()
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userGuid = Guid.Parse(userId);
+            await _cartService.Order(userGuid);
+            return Ok(new ResponseMessage<string>("Ordered", true, "Success"));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
+            {
+                Title = "Bad Request",
+                Status = StatusCodes.Status400BadRequest
+            }));
+        }
+    }
 }
