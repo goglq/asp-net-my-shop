@@ -24,4 +24,8 @@
       <ProjectReference Include="..\MyShop.SharedProject\MyShop.SharedProject.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="MyShop.Tests" />
+    </ItemGroup>
+
 </Project>

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyShop.Core.Models;
-using MyShop.Infrastructure;
 using MyShop.Infrastructure.Databases;
 using MyShop.Infrastructure.Repositories;
 using Xunit;
 
-namespace MyShop.Tests;
+namespace MyShop.Infrastructure.Tests.RepositoryTests;
 
 public class ProductRepositoryTests
 {

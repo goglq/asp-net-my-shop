@@ -50,8 +50,8 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new ResponseMessage<ProblemDetails>(e.Message, false, new ProblemDetails()
             {
-                Title = "Not Found",
-                Status = StatusCodes.Status404NotFound,
+                Title = "Bad Request",
+                Status = StatusCodes.Status400BadRequest,
             }));
         }
     }
