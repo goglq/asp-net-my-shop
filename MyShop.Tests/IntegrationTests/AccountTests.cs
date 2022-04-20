@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MyShop.Infrastructure.Databases;
+using MyShop.SharedProject;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -26,7 +27,7 @@ public class RegistrationTests : IDisposable
             {
                 services.AddDbContext<AppDbContext>(options =>
                 {
-                    options.UseSqlite("Data Source=:memory");
+                    options.UseSqlite("Data Source=myapp.db");
                 });
 
                 using var serviceProvider = services.BuildServiceProvider();
@@ -42,9 +43,7 @@ public class RegistrationTests : IDisposable
             });
         });
     }
-    
-    
-    
+
     [Fact] 
     public async Task Request_with_correct_body_responses_with_status_code_201()
     {
@@ -69,7 +68,7 @@ public class RegistrationTests : IDisposable
         const string correctPassword = "correct123";
         var dto = new RegistrationAccountDto()
         {
-            Email = "correct@",
+            Email = "incorrect",
             Name = "CorrectName",
             Password = correctPassword,
             RepeatPassword = correctPassword
@@ -114,6 +113,42 @@ public class RegistrationTests : IDisposable
         var response = await client.PostAsJsonAsync("/account/register", dto);
         
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    
+    [Fact]
+    public async Task Testing_LoginConfirmation()
+    {
+    
+        var client = _app.CreateClient();
+        var responseRegister = await client.PostAsJsonAsync("/account/register", new
+        {
+            Name = "TestUser",
+            Email = "test@email.com",
+            Password = "qwerty123",
+            RepeatPassword = "qwerty123"
+        });
+
+        if (!responseRegister.IsSuccessStatusCode)
+            throw new Exception("Registration didn't work");
+         
+        var loginResponse = await client.PostAsJsonAsync("/account/loginTwoFactor", new LoginAccountDto
+        {
+            Email = "test@email.com",
+            Password = "qwerty123"
+        });
+        
+        if (!loginResponse.IsSuccessStatusCode)
+            throw new Exception("Two Factor Code request failed.");
+    
+        var twoFactorCode = await loginResponse.Content.ReadFromJsonAsync<ResponseMessage<CodeDto>>();
+
+        var codeConfirmResponse = await client.PostAsJsonAsync("/account/confirmCode", new CodeDto()
+        {
+            Id = twoFactorCode.Model.Id,
+            Code = twoFactorCode.Model.Code
+        });
+
+        Assert.True(codeConfirmResponse.IsSuccessStatusCode);
     }
 
     public void Dispose()

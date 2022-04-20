@@ -15,11 +15,14 @@ public class AccountService : IAccountService
     
     private readonly IUnitOfWork _unitOfWork;
 
-    public AccountService(ITokenService tokenService, IUnitOfWork unitOfWork, IPasswordHasher<Account> passwordHasher)
+    private readonly ITwoFactorService _twoFactorService;
+
+    public AccountService(ITokenService tokenService, IUnitOfWork unitOfWork, IPasswordHasher<Account> passwordHasher, ITwoFactorService twoFactorService)
     {
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
+        _twoFactorService = twoFactorService;
     }
 
     public async Task<string> Register(string email, string name, string password)
@@ -74,6 +77,19 @@ public class AccountService : IAccountService
         if (verifyResult == PasswordVerificationResult.Failed)
             throw new InvalidPasswordException();
         return account.Id;
+    }
+    
+    public async Task<string> LoginConfirm(Guid codeId, int code)
+    {
+        var isCorrect = await _twoFactorService.IsCorrectCode(codeId, code);
+        if (!isCorrect)
+            throw new IncorrectTwoFactorCodeException();
+
+        var account = await _unitOfWork.ConfirmationCodeRepository.GetUserByCodeId(codeId);
+        
+        var token = _tokenService.GenerateToken(account);
+
+        return token;
     }
 
     public async Task<Account> GetAccountByConfirmationCodeId(Guid id)

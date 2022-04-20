@@ -10,6 +10,8 @@ public interface IAccountService
 
     Task<Guid> LoginTwoFactor(string email, string password);
 
+    Task<string> LoginConfirm(Guid id, int code);
+
     Task<bool> IsEmailTaken(string email);
 
     Task<IEnumerable<Account>> GetAccounts();

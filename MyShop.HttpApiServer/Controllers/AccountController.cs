@@ -80,15 +80,19 @@ public class AccountController : ControllerBase
         }
     }
 
-    [HttpGet("loginTwoFactor")]
-    public async Task<ActionResult<ResponseMessage<Guid>>> LoginTwoFactor(LoginAccountDto loginAccountDto)
+    [HttpPost("loginTwoFactor")]
+    public async Task<ActionResult<ResponseMessage<CodeDto>>> LoginTwoFactor(LoginAccountDto loginAccountDto)
     {
         try
         {
             var userId = await _accountService.LoginTwoFactor(loginAccountDto.Email, loginAccountDto.Password);
             var code = _twoFactorService.GenerateCode(6);
             var codeGuid = await _twoFactorService.CreateCode(userId, code);
-            return Ok(new ResponseMessage<Guid>("Two Factor Code", true, codeGuid));
+            return Ok(new ResponseMessage<CodeDto>("Two Factor Code", true, new CodeDto
+            {
+                Id = codeGuid,
+                Code = code
+            }));
         }
         catch (Exception e)
         {
@@ -101,12 +105,12 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("confirmCode")]
-    public async Task<ActionResult<ResponseMessage<string>>> ConfirmTwoFactor(Guid codeId, int code)
+    public async Task<ActionResult<ResponseMessage<string>>> ConfirmTwoFactor(CodeDto codeDto)
     {
         try
         {
-            var isCorrect = await _twoFactorService.IsCorrectCode(codeId, code);
-            return Ok();
+            var token = await _accountService.LoginConfirm(codeDto.Id, codeDto.Code);
+            return Ok(new ResponseMessage<string>("Two Factor Code", true, token));
         }
         catch (Exception e)
         {

@@ -16,7 +16,7 @@ namespace MyShop.HttpApiClient
         public static async Task<TResponse?> PostAsJsonAsync<TRequest, TResponse>(this HttpClient client,
             string? requestUrl, TRequest request)
         {
-            using var response = await client.PostAsJsonAsync<TRequest>(requestUrl, request);
+            using var response = await client.PostAsJsonAsync(requestUrl, request);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<TResponse>();
